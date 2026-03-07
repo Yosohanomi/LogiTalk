@@ -15,7 +15,7 @@ class MainWindow(CTk):
         self.frame.place(x=0, y=0)
         self.is_show_menu = False
         self.frame_width = 0
-        self.username = 'User43928'
+        self.username = 'Sophia'
 
 
 
@@ -40,7 +40,7 @@ class MainWindow(CTk):
         self.add_message("Демонстрація відображення зображення:", CTkImage(Image.open('cat.jpg'), size=(300, 300)))
         try:
             self.sock = socket(AF_INET, SOCK_STREAM)
-            self.sock.connect(('5.tcp.eu.ngrok.io', 16833))
+            self.sock.connect(('4.tcp.eu.ngrok.io', 18569))
             hello = f'TEXT@{self.username}@[SYSTEM] {self.username} приєднався(лась) до чату! \n'
             self.sock.send(hello.encode('utf-8'))
             threading.Thread(target=self.recv_message, daemon=True).start()
@@ -81,8 +81,10 @@ class MainWindow(CTk):
                 for label in message_frame.winfo_children():
                     label.configure(text_color="#ffffff")
     def save_name(self):
-        self.newUsername = self.entry.get()
-        self.username = self.newUsername
+        new_name = self.entry.get().strip()
+        if new_name:
+            self.username = new_name
+            self.add_message(f"Ваш новий нік: {self.username}")
 
     def toggle_show_menu(self):
         if self.is_show_menu:
