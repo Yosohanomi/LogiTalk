@@ -4,6 +4,35 @@ import io
 from socket import socket, AF_INET, SOCK_STREAM
 import threading
 from PIL import Image
+from tkinter import filedialog
+
+class RegisterWindow(CTk):
+    def __init__(self):
+        super().__init__()
+        self.username = None
+        self.title("Register")
+        self.geometry("300x300")
+
+        CTkLabel(self, text="Enter").pack(pady=30)
+        self.name_entry = CTkEntry(self, placeholder_text="Enter your name").pack()
+
+        self.host_entry = CTkEntry(self, placeholder_text="Enter your host").pack()
+
+        self.port_entry = CTkEntry(self, placeholder_text="Enter your port").pack()
+
+        self.submit_button = CTkButton(self, text="Join", command=self.start_chat).pack(pady=5)
+
+    def start_chat(self):
+        try:
+            self.sock = socket(AF_INET, SOCK_STREAM)
+            self.sock.connect((self.host.get(), int(self.port.get())))
+            hello = f"TEXT@{self.username}@SYSTEM {self.username} entered chat!\n"
+            self.sock.send(hello.encode('utf-8'))
+
+            self.destroy()
+        except Exception as e:
+            print(f'Couldn`nt join server: {e}')
+
 
 class MainWindow(CTk):
     def __init__(self):
@@ -216,3 +245,6 @@ class MainWindow(CTk):
 
 win = MainWindow()
 win.mainloop()
+
+if __name__ == '__main__':
+    RegisterWindow().mainloop()
